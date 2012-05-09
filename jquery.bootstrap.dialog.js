@@ -1,27 +1,32 @@
 (function($){
   $.fn.bootstrap_dialog = function(options){
-    var title, ok, cancel;
+    var title, content, ok, cancel, remove;
     var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
  
     if(typeof options == "string"){
       switch(options){
         case "close": 
-          $(this).data("current_dialog").hide();
-          $("#modal_background").hide();
+          $(this).data("current_dialog").remove();
+          $("#modal_background").remove();
+          $("#modal").remove();
           break;
         case "destroy":
           $(this).data("current_dialog").remove();
-          $("#modal_background").hide();
+          $("#modal_background").remove();
+          $("#modal").remove();
           break;
       }
       return $(this);
     }
     if(options) {
       title=options.title;
+      content=options.content;
       if(options.ok)
         ok=__bind(options.ok,this);
       if(options.cancel)
         cancel=__bind(options.cancel,this);
+      if(options.remove)
+        remove=__bind(options.remove,this);
     }
     else {
       title="";
@@ -35,16 +40,20 @@
     current_dialog.css("top",($(window).height()-current_dialog.height())/2);
     current_dialog.css("left",($(window).width()-current_dialog.width())/2);
     $(this).data("current_dialog",current_dialog)
-    $("<div class='modal-header'/>").appendTo(current_dialog).append("<h3>"+title+"</h3").append("<a href='#' class='close'>x</a>");
+    $("<div class='modal-header'/>").appendTo(current_dialog).append("<h3>"+title+"</h3");
     console.log(current_dialog)   
-    $("<div class='modal-body'>").appendTo(current_dialog).append($(this));
-    if(ok || cancel) {
+    $("<div class='modal-body'>").appendTo(current_dialog).append(content);
+    if(ok || cancel || remove) {
       footer = $("<div class='modal-footer'>").appendTo(current_dialog);
       if(ok) {
-        $("<a href='#' class='btn primary'>Save</a>").appendTo(footer).click(function(){ok();});
+        $("<a href='#' class='btn btn-primary'>Save</a>").appendTo(footer).click(function(){ok();});
       }
       if(cancel) {
         $("<a href='#' class='btn'>Cancel</a>").appendTo(footer).click(function(){cancel();});
+      }
+
+      if(remove) {
+        $("<a href='#' class='btn btn-danger'>Delete</a>").appendTo(footer).click(function(){remove();});
       }
     }
     $(current_dialog.find(".modal-header a.close")).click(function(){
@@ -54,3 +63,5 @@
     return $(this);
   };
 })(jQuery);
+
+
