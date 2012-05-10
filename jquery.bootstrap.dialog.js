@@ -55,13 +55,13 @@
     if(ok || cancel || remove) {
       footer = $("<div class='modal-footer'>").appendTo(current_dialog);
       if(ok) {
-        $("<a href='#' class='btn btn-primary'>Save</a>").appendTo(footer).click(function(){ok();});
+        $("<a href='#' class='btn btn-primary'>Save</a>").appendTo(footer).click(function(e){ e.preventDefault(); ok();});
       }
       if(cancel) {
-        $("<a href='#' class='btn'>Cancel</a>").appendTo(footer).click(function(){cancel();});
+        $("<a href='#' class='btn'>Cancel</a>").appendTo(footer).click(function(e){ e.preventDefault(); cancel();});
       }
       if(remove) {
-        $("<a href='#' class='btn btn-danger'>Delete</a>").appendTo(footer).click(function(){remove();});
+        $("<a href='#' class='btn btn-danger'>Delete</a>").appendTo(footer).click(function(e){ e.preventDefault(); remove();});
       }
     }
     $(current_dialog.find(".modal-header a.close")).click(function(){
